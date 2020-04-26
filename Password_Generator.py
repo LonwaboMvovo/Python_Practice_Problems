@@ -3,14 +3,13 @@ import random
 import string
 import time
 
-def password_generator(length,uppercase,lowercase,digits,space,special,brackets):
+def password_generator(length,uppercase,lowercase,digits,special,brackets):
     time_to_generate = time.time()
     characters = ''
 
     if uppercase == 'y': characters += string.ascii_uppercase
     if lowercase == 'y': characters += string.ascii_lowercase
     if digits == 'y': characters += string.digits
-    if space == 'y': characters += ' '
     if special == 'y': characters += string.punctuation
     if brackets == 'y': characters += '(){}<>[]'
     
@@ -47,12 +46,6 @@ while True:
     else: print('Invalid entry. You must enter "Y" for yes and "N" for no.\n')
 
 while True:
-    password_options['space'] = input('\nSpace( )?\n(Y)es or (N)o: ').lower()
-    if password_options['space'] == 'y' or password_options['space'] == 'n':
-        break
-    else: print('Invalid entry. You must enter "Y" for yes and "N" for no.\n')
-
-while True:
     password_options['special'] = input('\nSpecial(!,",#...)?\n(Y)es or (N)o: ').lower()
     if password_options['special'] == 'y' or password_options['special'] == 'n':
         break
@@ -65,8 +58,8 @@ while True:
     else: print('Invalid entry. You must enter "Y" for yes and "N" for no.\n')
 
 passwrd, time_for_passwrd = password_generator(password_options['length'],password_options['uppercase'],
-password_options['lowercase'],password_options['digits'],password_options['space'],
-password_options['special'],password_options['brackets'])
+password_options['lowercase'],password_options['digits'],password_options['special'],
+password_options['brackets'])
 
 print('\nYour generated password:\n' + passwrd)
 
