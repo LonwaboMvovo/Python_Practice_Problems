@@ -3,7 +3,7 @@
 print('\nChoose a number between 0 and 100 and I will try guess it!!')
 
 possible_guesses = list(range(101))
-lies = '\nWhy the fuck you lying?\nWhy you always lying\nHmmm oh my God\nStop fucking lying'
+lies = '\n♫♫ ~ Why the f**k you lying?\nWhy you always lying\nHmmm oh my God\nStop f**king lying ~ ♫♫'
 low = 0
 upp = 100
 counter = 1
