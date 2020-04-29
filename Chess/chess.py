@@ -45,27 +45,31 @@ def legal_move(side,move):
     list_move = [l.replace('h', '7') for l in list_move]
     # white pe2-e4 = P47-45
     # black pe7-e5 = p42-44
+    # white pd4-c5 = P35-
     if side == 'White': list_move[0] = move[0].upper()
-    print(list_move)
     if board[int(list_move[2])][int(list_move[1])] == list_move[0]:
-        move_piece(list_move)
-        return True
-        # if list_move[0] == 'P':
-        #     if board[int(list_move[5])][int(list_move[4])] == '0':
-        #         if list_move[2] == '7' and abs(int(list_move[5]) - int(list_move[2])) <= 2:
-        #             move_piece(list_move)
-        #             return True
-        #         elif abs(int(list_move[5]) - int(list_move[2])) == 1:
-        #             move_piece(list_move)
-        #             return True
-        # elif list_move[0] == 'p':
-        #     if board[int(list_move[5])][int(list_move[4])] == '0':
-        #         if list_move[2] == '2' and abs(int(list_move[5]) - int(list_move[2])) <= 2:
-        #             move_piece(list_move)
-        #             return True
-        #         elif abs(int(list_move[5]) - int(list_move[2])) == 1:
-        #             move_piece(list_move)
-        #             return True
+        if list_move[0] == 'P':
+            if board[int(list_move[5])][int(list_move[4])] == '0' and list_move[4] == list_move[1]:
+                if list_move[2] == '7' and abs(int(list_move[5]) - int(list_move[2])) <= 2:
+                    move_piece(list_move)
+                    return True
+                elif abs(int(list_move[5]) - int(list_move[2])) == 1:
+                    move_piece(list_move)
+                    return True
+            elif abs(int(list_move[5]) - int(list_move[2])) == 1 and abs(int(list_move[4]) - int(list_move[1])) == 1 and board[int(list_move[5])][int(list_move[4])].islower() and board[int(list_move[5])][int(list_move[4])] != '0':
+                move_piece(list_move)
+                return True
+        elif list_move[0] == 'p':
+            if board[int(list_move[5])][int(list_move[4])] == '0' and list_move[4] == list_move[1]:
+                if list_move[2] == '2' and abs(int(list_move[5]) - int(list_move[2])) <= 2:
+                    move_piece(list_move)
+                    return True
+                elif abs(int(list_move[5]) - int(list_move[2])) == 1:
+                    move_piece(list_move)
+                    return True
+            elif abs(int(list_move[5]) - int(list_move[2])) == 1 and abs(int(list_move[4]) - int(list_move[1])) == 1 and board[int(list_move[5])][int(list_move[4])].isupper() and board[int(list_move[5])][int(list_move[4])] != '0':
+                move_piece(list_move)
+                return True
         # elif list_move[0] == 'r':
         #     move_piece(list_move)
         #     return True
