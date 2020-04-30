@@ -45,6 +45,7 @@ def legal_move(side,move):
     list_move = [l.replace('h', '7') for l in list_move]
     if side == 'White': list_move[0] = move[0].upper()
     if board[int(list_move[2])][int(list_move[1])] == list_move[0]:
+        # Rules for pawns:
         if list_move[0] == 'P':
             if board[int(list_move[5])][int(list_move[4])] == '0' and list_move[4] == list_move[1]:
                 if list_move[2] == '7' and abs(int(list_move[5]) - int(list_move[2])) <= 2:
@@ -75,6 +76,7 @@ def legal_move(side,move):
                 board[int(last_move_made[5])][int(last_move_made[4])] = '0'
                 move_piece(list_move)
                 return True
+        # Rules for rooks:
         elif list_move[0] == 'R':
             if board[int(list_move[5])][int(list_move[4])] == '0' or board[int(list_move[5])][int(list_move[4])].islower():
                 if abs(int(list_move[4]) - int(list_move[1])) == 0:
@@ -139,6 +141,27 @@ def legal_move(side,move):
                                 if board[int(list_move[2])][int(list_move[1]) + hor_square] != '0': return False
                             move_piece(list_move)
                             return True
+        #Rules for knights:
+        elif list_move[0] == 'N':
+            if board[int(list_move[5])][int(list_move[4])] == '0' or board[int(list_move[5])][int(list_move[4])].islower():
+                if abs(int(list_move[4]) - int(list_move[1])) == 1:
+                    if abs(int(list_move[5]) - int(list_move[2])) == 2:
+                        move_piece(list_move)
+                        return True
+                elif abs(int(list_move[5]) - int(list_move[2])) == 1:
+                    if abs(int(list_move[4]) - int(list_move[1])) == 2:
+                        move_piece(list_move)
+                        return True
+        elif list_move[0] == 'n':
+            if board[int(list_move[5])][int(list_move[4])] == '0' or board[int(list_move[5])][int(list_move[4])].isupper():
+                if abs(int(list_move[4]) - int(list_move[1])) == 1:
+                    if abs(int(list_move[5]) - int(list_move[2])) == 2:
+                        move_piece(list_move)
+                        return True
+                elif abs(int(list_move[5]) - int(list_move[2])) == 1:
+                    if abs(int(list_move[4]) - int(list_move[1])) == 2:
+                        move_piece(list_move)
+                        return True
     return False
 
 
