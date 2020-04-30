@@ -43,8 +43,6 @@ def legal_move(side,move):
     list_move = [l.replace('f', '5') for l in list_move]
     list_move = [l.replace('g', '6') for l in list_move]
     list_move = [l.replace('h', '7') for l in list_move]
-    # white pe2-e4 = P47-45
-    # black pe7-e5 = p42-44
     if side == 'White': list_move[0] = move[0].upper()
     if board[int(list_move[2])][int(list_move[1])] == list_move[0]:
         if list_move[0] == 'P':
@@ -58,6 +56,10 @@ def legal_move(side,move):
             elif abs(int(list_move[5]) - int(list_move[2])) == 1 and abs(int(list_move[4]) - int(list_move[1])) == 1 and board[int(list_move[5])][int(list_move[4])].islower() and board[int(list_move[5])][int(list_move[4])] != '0':
                 move_piece(list_move)
                 return True
+            elif last_move_made[0] == 'p' and abs(int(last_move_made[5]) - int(last_move_made[2])) == 2 and list_move[4] == last_move_made[4] and abs(int(list_move[5]) - int(list_move[2])) == 1 and abs(int(list_move[4]) - int(list_move[1])) == 1 and board[int(list_move[5])][int(list_move[4])] == '0':
+                board[int(last_move_made[5])][int(last_move_made[4])] = '0'
+                move_piece(list_move)
+                return True
         elif list_move[0] == 'p':
             if board[int(list_move[5])][int(list_move[4])] == '0' and list_move[4] == list_move[1]:
                 if list_move[2] == '2' and abs(int(list_move[5]) - int(list_move[2])) <= 2:
@@ -67,6 +69,10 @@ def legal_move(side,move):
                     move_piece(list_move)
                     return True
             elif abs(int(list_move[5]) - int(list_move[2])) == 1 and abs(int(list_move[4]) - int(list_move[1])) == 1 and board[int(list_move[5])][int(list_move[4])].isupper() and board[int(list_move[5])][int(list_move[4])] != '0':
+                move_piece(list_move)
+                return True
+            elif last_move_made[0] == 'P' and abs(int(last_move_made[5]) - int(last_move_made[2])) == 2 and list_move[4] == last_move_made[4] and abs(int(list_move[5]) - int(list_move[2])) == 1 and abs(int(list_move[4]) - int(list_move[1])) == 1 and board[int(list_move[5])][int(list_move[4])] == '0':
+                board[int(last_move_made[5])][int(last_move_made[4])] = '0'
                 move_piece(list_move)
                 return True
         elif list_move[0] == 'R':
@@ -183,6 +189,23 @@ def chess_board(orientation):
 """
 
 
+def last_move(last_side, latest_move):
+    global last_move_made
+    last_move_made = [x for x in latest_move]
+    last_move_made[2] = str(8 - (int(last_move_made[2]) - 1))
+    last_move_made[5] = str(8 - (int(last_move_made[5]) - 1))
+    last_move_made = [l.replace('a', '0') for l in last_move_made]
+    last_move_made = [l.replace('b', '1') for l in last_move_made]
+    last_move_made = [l.replace('c', '2') for l in last_move_made]
+    last_move_made = [l.replace('d', '3') for l in last_move_made]
+    last_move_made = [l.replace('e', '4') for l in last_move_made]
+    last_move_made = [l.replace('f', '5') for l in last_move_made]
+    last_move_made = [l.replace('g', '6') for l in last_move_made]
+    last_move_made = [l.replace('h', '7') for l in last_move_made]
+    if last_side == 'White': last_move_made[0] = latest_move[0].upper()
+    return last_move_made
+
+
 board = [
     ['a','b','c','d','e','f','g','h'],
     ['r','n','b','q','k','b','n','r'],
@@ -194,3 +217,5 @@ board = [
     ['P','P','P','P','P','P','P','P'],
     ['R','N','B','Q','K','B','N','R']
 ]
+
+last_move_made = []

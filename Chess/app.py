@@ -29,5 +29,6 @@ while True:
             and int(player_move[5]) in range(1, 9)
             and chess.legal_move(player,player_move) == True)
             # os.system('cls' if os.name == 'nt' else 'clear')
+            chess.last_move(player, player_move)
             turn_id += 1
     except: print('\nNot a legal move. Enter "HELP" for all types of moves')
