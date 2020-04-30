@@ -28,6 +28,6 @@ while True:
             and (player_move[4] == 'a' or player_move[4] == 'b' or player_move[4] == 'c' or player_move[4] == 'd' or player_move[4] == 'e' or player_move[4] == 'f' or player_move[4] == 'g' or player_move[4] == 'h')
             and int(player_move[5]) in range(1, 9)
             and chess.legal_move(player,player_move) == True)
-            os.system('cls' if os.name == 'nt' else 'clear')
+            # os.system('cls' if os.name == 'nt' else 'clear')
             turn_id += 1
     except: print('\nNot a legal move. Enter "HELP" for all types of moves')
