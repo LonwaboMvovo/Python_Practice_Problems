@@ -337,6 +337,30 @@ def legal_move(side,move):
                                 if board[int(list_move[2])][int(list_move[1]) + hor_square] != '0': return False
                             move_piece(list_move)
                             return True
+        # White King rules:
+        elif list_move[0] == 'K':
+            if board[int(list_move[5])][int(list_move[4])] == '0' or board[int(list_move[5])][int(list_move[4])].islower():
+                if abs(int(list_move[4]) - int(list_move[1])) == abs(int(list_move[5]) - int(list_move[2])) and abs(int(list_move[4]) - int(list_move[1])) == 1:
+                    move_piece(list_move)
+                    return True
+                elif abs(int(list_move[4]) - int(list_move[1])) == 0 and abs(int(list_move[5]) - int(list_move[2])) == 1:
+                    move_piece(list_move)
+                    return True
+                elif abs(int(list_move[5]) - int(list_move[2])) == 0 and abs(int(list_move[4]) - int(list_move[1])) == 1:
+                    move_piece(list_move)
+                    return True
+        # Black King rules:
+        elif list_move[0] == 'k':
+            if board[int(list_move[5])][int(list_move[4])] == '0' or board[int(list_move[5])][int(list_move[4])].isupper():
+                if abs(int(list_move[4]) - int(list_move[1])) == abs(int(list_move[5]) - int(list_move[2])) and abs(int(list_move[4]) - int(list_move[1])) == 1:
+                    move_piece(list_move)
+                    return True
+                elif abs(int(list_move[4]) - int(list_move[1])) == 0 and abs(int(list_move[5]) - int(list_move[2])) == 1:
+                    move_piece(list_move)
+                    return True
+                elif abs(int(list_move[5]) - int(list_move[2])) == 0 and abs(int(list_move[4]) - int(list_move[1])) == 1:
+                    move_piece(list_move)
+                    return True
     return False
 
 
