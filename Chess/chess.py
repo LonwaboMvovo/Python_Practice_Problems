@@ -36,7 +36,7 @@ def legal_move(side,move):
     list_move[2] = str(8 - (int(list_move[2]) - 1))
     list_move[5] = str(8 - (int(list_move[5]) - 1))
     list_move = [l.replace('a', '0') for l in list_move]
-    list_move = [l.replace('b', '1') for l in list_move]
+    list_move[1:] = [l.replace('b', '1') for l in list_move[1:]]
     list_move = [l.replace('c', '2') for l in list_move]
     list_move = [l.replace('d', '3') for l in list_move]
     list_move = [l.replace('e', '4') for l in list_move]
@@ -141,7 +141,7 @@ def legal_move(side,move):
                                 if board[int(list_move[2])][int(list_move[1]) + hor_square] != '0': return False
                             move_piece(list_move)
                             return True
-        #Rules for knights:
+        # Rules for knights:
         elif list_move[0] == 'N':
             if board[int(list_move[5])][int(list_move[4])] == '0' or board[int(list_move[5])][int(list_move[4])].islower():
                 if abs(int(list_move[4]) - int(list_move[1])) == 1:
@@ -162,6 +162,58 @@ def legal_move(side,move):
                     if abs(int(list_move[4]) - int(list_move[1])) == 2:
                         move_piece(list_move)
                         return True
+        # Rules for bishops:
+        elif list_move[0] == 'B':
+            if board[int(list_move[5])][int(list_move[4])] == '0' or board[int(list_move[5])][int(list_move[4])].islower():
+                if abs(int(list_move[4]) - int(list_move[1])) == abs(int(list_move[5]) - int(list_move[2])):
+                    if int(list_move[5]) - int(list_move[2]) < 0:
+                        if int(list_move[4]) - int(list_move[1]) < 0:
+                            for diag_square in range(-1, int(list_move[5]) - int(list_move[2]), -1):
+                                if board[int(list_move[2]) + diag_square][int(list_move[1]) + diag_square] != '0': return False
+                            move_piece(list_move)
+                            return True
+                        elif int(list_move[4]) - int(list_move[1]) > 0:
+                            for diag_square in range(-1, int(list_move[5]) - int(list_move[2]), -1):
+                                if board[int(list_move[2]) + diag_square][int(list_move[1]) - diag_square] != '0': return False
+                            move_piece(list_move)
+                            return True
+                    elif int(list_move[5]) - int(list_move[2]) > 0:
+                        if int(list_move[4]) - int(list_move[1]) < 0:
+                            for diag_square in range(1, int(list_move[5]) - int(list_move[2])):
+                                if board[int(list_move[2]) + diag_square][int(list_move[1]) - diag_square] != '0': return False
+                            move_piece(list_move)
+                            return True
+                        elif int(list_move[4]) - int(list_move[1]) > 0:
+                            for diag_square in range(1, int(list_move[5]) - int(list_move[2])):
+                                if board[int(list_move[2]) + diag_square][int(list_move[1]) + diag_square] != '0': return False
+                            move_piece(list_move)
+                            return True
+        elif list_move[0] == 'b':
+            if board[int(list_move[5])][int(list_move[4])] == '0' or board[int(list_move[5])][int(list_move[4])].isupper():
+                if abs(int(list_move[4]) - int(list_move[1])) == abs(int(list_move[5]) - int(list_move[2])):
+                    if int(list_move[5]) - int(list_move[2]) < 0:
+                        if int(list_move[4]) - int(list_move[1]) < 0:
+                            for diag_square in range(-1, int(list_move[5]) - int(list_move[2]), -1):
+                                if board[int(list_move[2]) + diag_square][int(list_move[1]) + diag_square] != '0': return False
+                            move_piece(list_move)
+                            return True
+                        elif int(list_move[4]) - int(list_move[1]) > 0:
+                            for diag_square in range(-1, int(list_move[5]) - int(list_move[2]), -1):
+                                if board[int(list_move[2]) + diag_square][int(list_move[1]) - diag_square] != '0': return False
+                            move_piece(list_move)
+                            return True
+                    elif int(list_move[5]) - int(list_move[2]) > 0:
+                        if int(list_move[4]) - int(list_move[1]) < 0:
+                            for diag_square in range(1, int(list_move[5]) - int(list_move[2])):
+                                if board[int(list_move[2]) + diag_square][int(list_move[1]) - diag_square] != '0': return False
+                            move_piece(list_move)
+                            return True
+                        elif int(list_move[4]) - int(list_move[1]) > 0:
+                            for diag_square in range(1, int(list_move[5]) - int(list_move[2])):
+                                if board[int(list_move[2]) + diag_square][int(list_move[1]) + diag_square] != '0': return False
+                            move_piece(list_move)
+                            return True
+
     return False
 
 
