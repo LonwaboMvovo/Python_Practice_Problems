@@ -19,7 +19,10 @@ while True:
 "O-O" for king-side castling
 "O-O-O" for queen-side castling
 "=" to offer draw
-"Resign" to resign from game''')
+"RESIGN" to resign from game''')
+        elif player_move == 'resign':
+            print(f'{player} resigned. {"Black" if player == "White" else "White"} is victorious.')
+            break
         elif player_move == '=':
             while True:
                 try:
@@ -28,7 +31,7 @@ while True:
                     break
                 except: print('\nInvalid response. (Y) for yes you would like to accept the draw offer of (N) for no you would like to continue playing.')
             if draw_response == 'y':
-                print("\nGame ends in a draw!")
+                print("\nGame ends in a draw.")
                 break
         else:
             assert ((player_move[0] == 'r' or player_move[0] == 'n' or player_move[0] == 'b' or player_move[0] == 'q' or player_move[0] == 'k' or player_move[0] == 'p')
