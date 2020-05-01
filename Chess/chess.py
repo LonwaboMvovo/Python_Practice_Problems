@@ -1,3 +1,4 @@
+# Converts letter input to chess piece for the displayed board
 def what_piece(rank,fil):
     if board[rank][fil] == 'p':
         return '♙'
@@ -23,15 +24,19 @@ def what_piece(rank,fil):
         return '♛'
     elif board[rank][fil] == 'K':
         return '♚'
-    else: return ' '
+    else:
+        return ' '
 
 
+# Replace piece position to 0 which is displayed as ' ' and position to where piece is moving to piece letter
 def move_piece(what_move):
     board[int(what_move[2])][int(what_move[1])] = '0'
     board[int(what_move[5])][int(what_move[4])] = what_move[0]
 
 
+# First checks if inputed move is legal and then calls move_piece function if it is
 def legal_move(side,move):
+    # Inputed moves converted for 'board'
     list_move = [x for x in move]
     list_move[2] = str(8 - (int(list_move[2]) - 1))
     list_move[5] = str(8 - (int(list_move[5]) - 1))
@@ -43,9 +48,12 @@ def legal_move(side,move):
     list_move = [l.replace('f', '5') for l in list_move]
     list_move = [l.replace('g', '6') for l in list_move]
     list_move = [l.replace('h', '7') for l in list_move]
+
+    # White pieces made uppercase for 'board'
     if side == 'White': list_move[0] = move[0].upper()
+    # Rules for pieces:
     if board[int(list_move[2])][int(list_move[1])] == list_move[0]:
-        # Rules for pawns:
+        # White pawn rules
         if list_move[0] == 'P':
             if board[int(list_move[5])][int(list_move[4])] == '0' and list_move[4] == list_move[1]:
                 if list_move[2] == '7' and abs(int(list_move[5]) - int(list_move[2])) <= 2:
@@ -61,6 +69,7 @@ def legal_move(side,move):
                 board[int(last_move_made[5])][int(last_move_made[4])] = '0'
                 move_piece(list_move)
                 return True
+        # Black pawn rules
         elif list_move[0] == 'p':
             if board[int(list_move[5])][int(list_move[4])] == '0' and list_move[4] == list_move[1]:
                 if list_move[2] == '2' and abs(int(list_move[5]) - int(list_move[2])) <= 2:
@@ -76,7 +85,7 @@ def legal_move(side,move):
                 board[int(last_move_made[5])][int(last_move_made[4])] = '0'
                 move_piece(list_move)
                 return True
-        # Rules for rooks:
+        # White rook rules:
         elif list_move[0] == 'R':
             if board[int(list_move[5])][int(list_move[4])] == '0' or board[int(list_move[5])][int(list_move[4])].islower():
                 if abs(int(list_move[4]) - int(list_move[1])) == 0:
@@ -109,6 +118,7 @@ def legal_move(side,move):
                                 if board[int(list_move[2])][int(list_move[1]) + hor_square] != '0': return False
                             move_piece(list_move)
                             return True
+        # Black rook rules:
         elif list_move[0] == 'r':
             if board[int(list_move[5])][int(list_move[4])] == '0' or board[int(list_move[5])][int(list_move[4])].isupper():
                 if abs(int(list_move[4]) - int(list_move[1])) == 0:
@@ -141,7 +151,7 @@ def legal_move(side,move):
                                 if board[int(list_move[2])][int(list_move[1]) + hor_square] != '0': return False
                             move_piece(list_move)
                             return True
-        # Rules for knights:
+        # White knight rules:
         elif list_move[0] == 'N':
             if board[int(list_move[5])][int(list_move[4])] == '0' or board[int(list_move[5])][int(list_move[4])].islower():
                 if abs(int(list_move[4]) - int(list_move[1])) == 1:
@@ -152,6 +162,7 @@ def legal_move(side,move):
                     if abs(int(list_move[4]) - int(list_move[1])) == 2:
                         move_piece(list_move)
                         return True
+        # Black knight rules:
         elif list_move[0] == 'n':
             if board[int(list_move[5])][int(list_move[4])] == '0' or board[int(list_move[5])][int(list_move[4])].isupper():
                 if abs(int(list_move[4]) - int(list_move[1])) == 1:
@@ -162,7 +173,7 @@ def legal_move(side,move):
                     if abs(int(list_move[4]) - int(list_move[1])) == 2:
                         move_piece(list_move)
                         return True
-        # Rules for bishops:
+        # White bishop rules:
         elif list_move[0] == 'B':
             if board[int(list_move[5])][int(list_move[4])] == '0' or board[int(list_move[5])][int(list_move[4])].islower():
                 if abs(int(list_move[4]) - int(list_move[1])) == abs(int(list_move[5]) - int(list_move[2])):
@@ -188,6 +199,7 @@ def legal_move(side,move):
                                 if board[int(list_move[2]) + diag_square][int(list_move[1]) + diag_square] != '0': return False
                             move_piece(list_move)
                             return True
+        # Black bishop rules:
         elif list_move[0] == 'b':
             if board[int(list_move[5])][int(list_move[4])] == '0' or board[int(list_move[5])][int(list_move[4])].isupper():
                 if abs(int(list_move[4]) - int(list_move[1])) == abs(int(list_move[5]) - int(list_move[2])):
@@ -213,10 +225,122 @@ def legal_move(side,move):
                                 if board[int(list_move[2]) + diag_square][int(list_move[1]) + diag_square] != '0': return False
                             move_piece(list_move)
                             return True
-
+        # White Queen rules:
+        elif list_move[0] == 'Q':
+            if board[int(list_move[5])][int(list_move[4])] == '0' or board[int(list_move[5])][int(list_move[4])].islower():
+                if abs(int(list_move[4]) - int(list_move[1])) == abs(int(list_move[5]) - int(list_move[2])):
+                    if int(list_move[5]) - int(list_move[2]) < 0:
+                        if int(list_move[4]) - int(list_move[1]) < 0:
+                            for diag_square in range(-1, int(list_move[5]) - int(list_move[2]), -1):
+                                if board[int(list_move[2]) + diag_square][int(list_move[1]) + diag_square] != '0': return False
+                            move_piece(list_move)
+                            return True
+                        elif int(list_move[4]) - int(list_move[1]) > 0:
+                            for diag_square in range(-1, int(list_move[5]) - int(list_move[2]), -1):
+                                if board[int(list_move[2]) + diag_square][int(list_move[1]) - diag_square] != '0': return False
+                            move_piece(list_move)
+                            return True
+                    elif int(list_move[5]) - int(list_move[2]) > 0:
+                        if int(list_move[4]) - int(list_move[1]) < 0:
+                            for diag_square in range(1, int(list_move[5]) - int(list_move[2])):
+                                if board[int(list_move[2]) + diag_square][int(list_move[1]) - diag_square] != '0': return False
+                            move_piece(list_move)
+                            return True
+                        elif int(list_move[4]) - int(list_move[1]) > 0:
+                            for diag_square in range(1, int(list_move[5]) - int(list_move[2])):
+                                if board[int(list_move[2]) + diag_square][int(list_move[1]) + diag_square] != '0': return False
+                            move_piece(list_move)
+                            return True
+                elif abs(int(list_move[4]) - int(list_move[1])) == 0:
+                    if abs(int(list_move[5]) - int(list_move[2])) == 1:
+                        move_piece(list_move)
+                        return True
+                    else:
+                        if int(list_move[5]) - int(list_move[2]) < 0:
+                            for vert_square in range(-1, int(list_move[5]) - int(list_move[2]), -1):
+                                if board[int(list_move[2]) + vert_square][int(list_move[1])] != '0': return False
+                            move_piece(list_move)
+                            return True
+                        else:
+                            for vert_square in range(1, int(list_move[5]) - int(list_move[2])):
+                                if board[int(list_move[2]) + vert_square][int(list_move[1])] != '0': return False
+                            move_piece(list_move)
+                            return True
+                elif abs(int(list_move[5]) - int(list_move[2])) == 0:
+                    if abs(int(list_move[4]) - int(list_move[1])) == 1:
+                        move_piece(list_move)
+                        return True
+                    else:
+                        if int(list_move[4]) - int(list_move[1]) < 0:
+                            for hor_square in range(-1, int(list_move[4]) - int(list_move[1]), -1):
+                                if board[int(list_move[2])][int(list_move[1]) + hor_square] != '0': return False
+                            move_piece(list_move)
+                            return True
+                        else:
+                            for hor_square in range(1, int(list_move[4]) - int(list_move[1])):
+                                if board[int(list_move[2])][int(list_move[1]) + hor_square] != '0': return False
+                            move_piece(list_move)
+                            return True
+        # Black Queen rules:
+        elif list_move[0] == 'q':
+            if board[int(list_move[5])][int(list_move[4])] == '0' or board[int(list_move[5])][int(list_move[4])].isupper():
+                if abs(int(list_move[4]) - int(list_move[1])) == abs(int(list_move[5]) - int(list_move[2])):
+                    if int(list_move[5]) - int(list_move[2]) < 0:
+                        if int(list_move[4]) - int(list_move[1]) < 0:
+                            for diag_square in range(-1, int(list_move[5]) - int(list_move[2]), -1):
+                                if board[int(list_move[2]) + diag_square][int(list_move[1]) + diag_square] != '0': return False
+                            move_piece(list_move)
+                            return True
+                        elif int(list_move[4]) - int(list_move[1]) > 0:
+                            for diag_square in range(-1, int(list_move[5]) - int(list_move[2]), -1):
+                                if board[int(list_move[2]) + diag_square][int(list_move[1]) - diag_square] != '0': return False
+                            move_piece(list_move)
+                            return True
+                    elif int(list_move[5]) - int(list_move[2]) > 0:
+                        if int(list_move[4]) - int(list_move[1]) < 0:
+                            for diag_square in range(1, int(list_move[5]) - int(list_move[2])):
+                                if board[int(list_move[2]) + diag_square][int(list_move[1]) - diag_square] != '0': return False
+                            move_piece(list_move)
+                            return True
+                        elif int(list_move[4]) - int(list_move[1]) > 0:
+                            for diag_square in range(1, int(list_move[5]) - int(list_move[2])):
+                                if board[int(list_move[2]) + diag_square][int(list_move[1]) + diag_square] != '0': return False
+                            move_piece(list_move)
+                            return True
+                elif abs(int(list_move[4]) - int(list_move[1])) == 0:
+                    if abs(int(list_move[5]) - int(list_move[2])) == 1:
+                        move_piece(list_move)
+                        return True
+                    else:
+                        if int(list_move[5]) - int(list_move[2]) < 0:
+                            for vert_square in range(-1, int(list_move[5]) - int(list_move[2]), -1):
+                                if board[int(list_move[2]) + vert_square][int(list_move[1])] != '0': return False
+                            move_piece(list_move)
+                            return True
+                        else:
+                            for vert_square in range(1, int(list_move[5]) - int(list_move[2])):
+                                if board[int(list_move[2]) + vert_square][int(list_move[1])] != '0': return False
+                            move_piece(list_move)
+                            return True
+                elif abs(int(list_move[5]) - int(list_move[2])) == 0:
+                    if abs(int(list_move[4]) - int(list_move[1])) == 1:
+                        move_piece(list_move)
+                        return True
+                    else:
+                        if int(list_move[4]) - int(list_move[1]) < 0:
+                            for hor_square in range(-1, int(list_move[4]) - int(list_move[1]), -1):
+                                if board[int(list_move[2])][int(list_move[1]) + hor_square] != '0': return False
+                            move_piece(list_move)
+                            return True
+                        else:
+                            for hor_square in range(1, int(list_move[4]) - int(list_move[1])):
+                                if board[int(list_move[2])][int(list_move[1]) + hor_square] != '0': return False
+                            move_piece(list_move)
+                            return True
     return False
 
 
+# Displays the board for the orientation of the side playing
 def chess_board(orientation):
     if orientation == 'White':
         return f"""
@@ -264,6 +388,7 @@ def chess_board(orientation):
 """
 
 
+# Stores the last move made. Used for en passant and check
 def last_move(last_side, latest_move):
     global last_move_made
     last_move_made = [x for x in latest_move]
@@ -281,6 +406,7 @@ def last_move(last_side, latest_move):
     return last_move_made
 
 
+# Background board needed for move checks
 board = [
     ['a','b','c','d','e','f','g','h'],
     ['r','n','b','q','k','b','n','r'],
