@@ -34,6 +34,19 @@ def move_piece(what_move):
     board[int(what_move[5])][int(what_move[4])] = what_move[0]
 
 
+# Determines which rook has moved so that castling cannot take place
+def which_rook_moved(p1,p2):
+    global rook_tracker
+    if p1 == '7' and p2 == '8':
+        rook_tracker['wk'] = True
+    elif p1 == '0' and p2 == '8':
+        rook_tracker['wq'] = True
+    elif p1 == '7' and p2 == '1':
+        rook_tracker['bk'] = True
+    elif p1 == '0' and p2 == '1':
+        rook_tracker['bq'] = True
+
+
 # First checks if inputed move is legal and then calls move_piece function if it is
 def legal_move(side,move):
     # Inputed moves converted for 'board'
@@ -51,6 +64,7 @@ def legal_move(side,move):
 
     # White pieces made uppercase for 'board'
     if side == 'White': list_move[0] = move[0].upper()
+
     # Rules for pieces:
     if board[int(list_move[2])][int(list_move[1])] == list_move[0]:
         # White pawn rules
@@ -65,8 +79,8 @@ def legal_move(side,move):
             elif abs(int(list_move[5]) - int(list_move[2])) == 1 and abs(int(list_move[4]) - int(list_move[1])) == 1 and board[int(list_move[5])][int(list_move[4])].islower() and board[int(list_move[5])][int(list_move[4])] != '0':
                 move_piece(list_move)
                 return True
-            elif last_move_made[0] == 'p' and abs(int(last_move_made[5]) - int(last_move_made[2])) == 2 and list_move[4] == last_move_made[4] and abs(int(list_move[5]) - int(list_move[2])) == 1 and abs(int(list_move[4]) - int(list_move[1])) == 1 and board[int(list_move[5])][int(list_move[4])] == '0':
-                board[int(last_move_made[5])][int(last_move_made[4])] = '0'
+            elif all_moves_made[-1][0] == 'p' and abs(int(all_moves_made[-1][5]) - int(all_moves_made[-1][2])) == 2 and list_move[4] == all_moves_made[-1][4] and abs(int(list_move[5]) - int(list_move[2])) == 1 and abs(int(list_move[4]) - int(list_move[1])) == 1 and board[int(list_move[5])][int(list_move[4])] == '0':
+                board[int(all_moves_made[-1][5])][int(all_moves_made[-1][4])] = '0'
                 move_piece(list_move)
                 return True
         # Black pawn rules
@@ -81,8 +95,8 @@ def legal_move(side,move):
             elif abs(int(list_move[5]) - int(list_move[2])) == 1 and abs(int(list_move[4]) - int(list_move[1])) == 1 and board[int(list_move[5])][int(list_move[4])].isupper() and board[int(list_move[5])][int(list_move[4])] != '0':
                 move_piece(list_move)
                 return True
-            elif last_move_made[0] == 'P' and abs(int(last_move_made[5]) - int(last_move_made[2])) == 2 and list_move[4] == last_move_made[4] and abs(int(list_move[5]) - int(list_move[2])) == 1 and abs(int(list_move[4]) - int(list_move[1])) == 1 and board[int(list_move[5])][int(list_move[4])] == '0':
-                board[int(last_move_made[5])][int(last_move_made[4])] = '0'
+            elif all_moves_made[-1][0] == 'P' and abs(int(all_moves_made[-1][5]) - int(all_moves_made[-1][2])) == 2 and list_move[4] == all_moves_made[-1][4] and abs(int(list_move[5]) - int(list_move[2])) == 1 and abs(int(list_move[4]) - int(list_move[1])) == 1 and board[int(list_move[5])][int(list_move[4])] == '0':
+                board[int(all_moves_made[-1][5])][int(all_moves_made[-1][4])] = '0'
                 move_piece(list_move)
                 return True
         # White rook rules:
@@ -90,32 +104,38 @@ def legal_move(side,move):
             if board[int(list_move[5])][int(list_move[4])] == '0' or board[int(list_move[5])][int(list_move[4])].islower():
                 if abs(int(list_move[4]) - int(list_move[1])) == 0:
                     if abs(int(list_move[5]) - int(list_move[2])) == 1:
+                        which_rook_moved(list_move[1],list_move[2])
                         move_piece(list_move)
                         return True
                     else:
                         if int(list_move[5]) - int(list_move[2]) < 0:
                             for vert_square in range(-1, int(list_move[5]) - int(list_move[2]), -1):
                                 if board[int(list_move[2]) + vert_square][int(list_move[1])] != '0': return False
+                            which_rook_moved(list_move[1],list_move[2])
                             move_piece(list_move)
                             return True
                         else:
                             for vert_square in range(1, int(list_move[5]) - int(list_move[2])):
                                 if board[int(list_move[2]) + vert_square][int(list_move[1])] != '0': return False
+                            which_rook_moved(list_move[1],list_move[2])
                             move_piece(list_move)
                             return True
                 elif abs(int(list_move[5]) - int(list_move[2])) == 0:
                     if abs(int(list_move[4]) - int(list_move[1])) == 1:
+                        which_rook_moved(list_move[1],list_move[2])
                         move_piece(list_move)
                         return True
                     else:
                         if int(list_move[4]) - int(list_move[1]) < 0:
                             for hor_square in range(-1, int(list_move[4]) - int(list_move[1]), -1):
                                 if board[int(list_move[2])][int(list_move[1]) + hor_square] != '0': return False
+                            which_rook_moved(list_move[1],list_move[2])
                             move_piece(list_move)
                             return True
                         else:
                             for hor_square in range(1, int(list_move[4]) - int(list_move[1])):
                                 if board[int(list_move[2])][int(list_move[1]) + hor_square] != '0': return False
+                            which_rook_moved(list_move[1],list_move[2])
                             move_piece(list_move)
                             return True
         # Black rook rules:
@@ -123,32 +143,38 @@ def legal_move(side,move):
             if board[int(list_move[5])][int(list_move[4])] == '0' or board[int(list_move[5])][int(list_move[4])].isupper():
                 if abs(int(list_move[4]) - int(list_move[1])) == 0:
                     if abs(int(list_move[5]) - int(list_move[2])) == 1:
+                        which_rook_moved(list_move[1],list_move[2])
                         move_piece(list_move)
                         return True
                     else:
                         if int(list_move[5]) - int(list_move[2]) < 0:
                             for vert_square in range(-1, int(list_move[5]) - int(list_move[2]), -1):
                                 if board[int(list_move[2]) + vert_square][int(list_move[1])] != '0': return False
+                            which_rook_moved(list_move[1],list_move[2])
                             move_piece(list_move)
                             return True
                         else:
                             for vert_square in range(1, int(list_move[5]) - int(list_move[2])):
                                 if board[int(list_move[2]) + vert_square][int(list_move[1])] != '0': return False
+                            which_rook_moved(list_move[1],list_move[2])
                             move_piece(list_move)
                             return True
                 elif abs(int(list_move[5]) - int(list_move[2])) == 0:
                     if abs(int(list_move[4]) - int(list_move[1])) == 1:
+                        which_rook_moved(list_move[1],list_move[2])
                         move_piece(list_move)
                         return True
                     else:
                         if int(list_move[4]) - int(list_move[1]) < 0:
                             for hor_square in range(-1, int(list_move[4]) - int(list_move[1]), -1):
                                 if board[int(list_move[2])][int(list_move[1]) + hor_square] != '0': return False
+                            which_rook_moved(list_move[1],list_move[2])
                             move_piece(list_move)
                             return True
                         else:
                             for hor_square in range(1, int(list_move[4]) - int(list_move[1])):
                                 if board[int(list_move[2])][int(list_move[1]) + hor_square] != '0': return False
+                            which_rook_moved(list_move[1],list_move[2])
                             move_piece(list_move)
                             return True
         # White knight rules:
@@ -412,25 +438,61 @@ def chess_board(orientation):
 """
 
 
-# Stores the last move made. Used for en passant and check
-def last_move(last_side, latest_move):
-    global last_move_made
-    last_move_made = [x for x in latest_move]
-    last_move_made[2] = str(8 - (int(last_move_made[2]) - 1))
-    last_move_made[5] = str(8 - (int(last_move_made[5]) - 1))
-    last_move_made = [l.replace('a', '0') for l in last_move_made]
-    last_move_made = [l.replace('b', '1') for l in last_move_made]
-    last_move_made = [l.replace('c', '2') for l in last_move_made]
-    last_move_made = [l.replace('d', '3') for l in last_move_made]
-    last_move_made = [l.replace('e', '4') for l in last_move_made]
-    last_move_made = [l.replace('f', '5') for l in last_move_made]
-    last_move_made = [l.replace('g', '6') for l in last_move_made]
-    last_move_made = [l.replace('h', '7') for l in last_move_made]
-    if last_side == 'White': last_move_made[0] = latest_move[0].upper()
-    return last_move_made
+# Short castling
+def short_castle(side_castling):
+    global all_moves_made
+    if side_castling == 'White':
+        for move_i in range(len(all_moves_made)):
+            if all_moves_made[move_i][0] == 'K': return False
+        if rook_tracker['wk'] == True: return False
+        if 'w-o-o' in  all_moves_made: return False
+        elif board[8][5] == '0' and board[8][6] == '0':
+            board[8][4] = '0'
+            board[8][5] = 'R'
+            board[8][6] = 'K'
+            board[8][7] = '0'
+            return True
+    else:
+        for move_i in range(len(all_moves_made)):
+            if all_moves_made[move_i][0] == 'k': return False
+        if rook_tracker['bk'] == True: return False
+        if 'b-o-o' in  all_moves_made: return False
+        elif board[1][5] == '0' and board[1][6] == '0':
+            board[1][4] = '0'
+            board[1][5] = 'r'
+            board[1][6] = 'k'
+            board[1][7] = '0'
+            return True
+    return False
 
 
-# Background board needed for move checks
+# Adds last move to all moves made
+def add_last_move(last_side, move_to_add):
+    if move_to_add == 'o-o':
+        if last_side == 'White':
+            move_to_add = 'w-' + move_to_add
+        else:
+            move_to_add = 'b-' + move_to_add
+    else:
+        # Inputed moves converted for 'board'
+        move_to_add = [x for x in move_to_add]
+        move_to_add[2] = str(8 - (int(move_to_add[2]) - 1))
+        move_to_add[5] = str(8 - (int(move_to_add[5]) - 1))
+        move_to_add = [l.replace('a', '0') for l in move_to_add]
+        move_to_add[1:] = [l.replace('b', '1') for l in move_to_add[1:]]
+        move_to_add = [l.replace('c', '2') for l in move_to_add]
+        move_to_add = [l.replace('d', '3') for l in move_to_add]
+        move_to_add = [l.replace('e', '4') for l in move_to_add]
+        move_to_add = [l.replace('f', '5') for l in move_to_add]
+        move_to_add = [l.replace('g', '6') for l in move_to_add]
+        move_to_add = [l.replace('h', '7') for l in move_to_add]
+
+        # White pieces made uppercase for 'board'
+        if last_side == 'White': move_to_add[0] = move_to_add[0].upper()   
+    all_moves_made.append(move_to_add)
+
+    
+# Board for code
 board = [
     ['a','b','c','d','e','f','g','h'],
     ['r','n','b','q','k','b','n','r'],
@@ -444,3 +506,10 @@ board = [
 ]
 
 last_move_made = []
+all_moves_made = []
+rook_tracker = {
+    'wk': False,
+    'wq': False,
+    'bk': False,
+    'bq': False
+}
