@@ -37,6 +37,10 @@ while True:
             assert chess.short_castle(player) == True
             chess.add_last_move(player, player_move)
             turn_id += 1
+        elif player_move == 'o-o-o':
+            assert chess.long_castle(player) == True
+            chess.add_last_move(player, player_move)
+            turn_id += 1
         else:
             # Maybe move this to chess module or remove entirely
             assert ((player_move[0] == 'r' or player_move[0] == 'n' or player_move[0] == 'b' or player_move[0] == 'q' or player_move[0] == 'k' or player_move[0] == 'p')

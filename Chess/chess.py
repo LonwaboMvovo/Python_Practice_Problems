@@ -466,9 +466,42 @@ def short_castle(side_castling):
     return False
 
 
+# Long castling
+def long_castle(side_castling):
+    global all_moves_made
+    if side_castling == 'White':
+        for move_i in range(len(all_moves_made)):
+            if all_moves_made[move_i][0] == 'K': return False
+        if rook_tracker['wq'] == True: return False
+        if 'w-o-o-o' in  all_moves_made: return False
+        elif board[8][1] == '0' and board[8][2] == '0' and board[8][3] == '0':
+            board[8][0] = '0'
+            board[8][2] = 'K'
+            board[8][3] = 'R'
+            board[8][4] = '0'
+            return True
+    else:
+        for move_i in range(len(all_moves_made)):
+            if all_moves_made[move_i][0] == 'k': return False
+        if rook_tracker['bq'] == True: return False
+        if 'b-o-o-o' in  all_moves_made: return False
+        elif board[1][1] == '0' and board[1][2] == '0' and board[1][3] == '0':
+            board[1][0] = '0'
+            board[1][2] = 'k'
+            board[1][3] = 'r'
+            board[1][4] = '0'
+            return True
+    return False
+
+
 # Adds last move to all moves made
 def add_last_move(last_side, move_to_add):
     if move_to_add == 'o-o':
+        if last_side == 'White':
+            move_to_add = 'w-' + move_to_add
+        else:
+            move_to_add = 'b-' + move_to_add
+    elif move_to_add == 'o-o-o':
         if last_side == 'White':
             move_to_add = 'w-' + move_to_add
         else:
@@ -495,14 +528,14 @@ def add_last_move(last_side, move_to_add):
 # Board for code
 board = [
     ['a','b','c','d','e','f','g','h'],
-    ['r','n','b','q','k','b','n','r'],
+    ['r','0','0','0','k','b','n','r'],
     ['p','p','p','p','p','p','p','p'],
     ['0','0','0','0','0','0','0','0'],
     ['0','0','0','0','0','0','0','0'],
     ['0','0','0','0','0','0','0','0'],
     ['0','0','0','0','0','0','0','0'],
     ['P','P','P','P','P','P','P','P'],
-    ['R','N','B','Q','K','B','N','R']
+    ['R','0','0','0','K','B','N','R']
 ]
 
 last_move_made = []
